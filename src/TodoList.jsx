@@ -18,19 +18,25 @@ function TodoList() {
 
     return (
         <>
-            <label>Description:</label>
-            <input
+        <header className="todo-header">
+            <h1>Simple Todolist</h1>
+            </header>
+            <div className="input-container">
+                <span className="input-label">Add todo:</span>
+                <label>Description:</label>
+                <input
                 name="description"
                 onChange={handleChange}
                 value={todo.description}
-            />
-            <label>Date:</label>
-            <input
+                />
+                <label>Date:</label>
+                <input
                 name="date"
                 onChange={handleChange}
                 value={todo.date}
-            />
-            <button onClick={addTodo}>Lisää</button>
+                />
+            <button onClick={addTodo}>Add</button>
+            </div>
             <table>
                 <thead>
                     <tr>

@@ -1,25 +1,51 @@
+.todo-header {
+  background-color: black;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-header h1 {
+  color: white;
+  margin: 0;
+  font-size: 18px;
+  line-height: normal;
+}
+
+.input-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.input-label {
+  position: relative;
+  top: -33px;
+  left: 20px;
+  background-color: white;
+  color: #333;
+}
+
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 
-table th,
+thead th {
+  border-bottom: 1px solid #ccc;;
+}
+
+tbody tr {
+  border-bottom: 1px solid #ccc;
+}
+
 table td {
-  border: 1px solid black;
-  padding: 6px; 
+  border: none;
 }
 
 #root {
