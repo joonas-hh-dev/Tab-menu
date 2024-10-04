@@ -1,3 +1,7 @@
+:root {
+  --ag-icon-font-family: agGridMaterial;
+}
+
 .todo-header {
   background-color: black;
   height: 60px;

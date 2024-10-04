@@ -1,50 +1,84 @@
-import { useState } from "react";
-import TodoTable from "./TodoTable";
+import React, { useState, useRef } from "react";
+import { AgGridReact } from "ag-grid-react";
 
-function TodoList() {
-    const [todo, setTodo] = useState({ description: "", date: "" });
-    const [todos, setTodos] = useState([]);
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
+import 'ag-grid-community/styles/agGridMaterialFont.css';
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setTodo((prev) => ({ ...prev, [name]: value }));
-    };
+const TodoList = () => {
+  const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState({ desc: "", priority: "", date: "" });
+  const gridRef = useRef();
 
-    const addTodo = () => {
-        if (todo.description.trim() && todo.date) {
-            setTodos([todo, ...todos]);
-            setTodo({ description: "", date: "" });
-        }
-    };
+  const columnDefs = [
+    { headerName: "Description", field: "desc", sortable: true, filter: true, flex: 1, floatingFilter: true },
+    { headerName: "Date", field: "date", sortable: true, filter: true, flex: 1, floatingFilter: true },
+    {
+      headerName: "Priority",
+      field: "priority",
+      sortable: true,
+      filter: true,
+      flex: 1,
+      floatingFilter: true,
+      cellStyle: (params) => (params.value === "High" ? { color: "red" } : { color: "black" }),
+    },
+  ];  
 
-    const deleteTodo = (indexToDelete) => {
-        setTodos(todos.filter((_, index) => index !== indexToDelete));
-    };
+  const addTodo = () => {
+    if (todo.desc && todo.priority && todo.date) {
+      setTodos([...todos, { ...todo }]);
+      setTodo({ desc: "", priority: "", date: "" });
+    } else {
+      alert("Fill in all fields!");
+    }
+  };
 
-    return (
-        <>
-        <header className="todo-header">
-            <h1>Simple Todolist</h1>
-            </header>
-            <div className="input-container">
-                <span className="input-label">Add todo:</span>
-                <label>Description:</label>
-                <input
-                name="description"
-                onChange={handleChange}
-                value={todo.description}
-                />
-                <label>Date:</label>
-                <input
-                name="date"
-                onChange={handleChange}
-                value={todo.date}
-                />
-            <button onClick={addTodo}>Add</button>
-            </div>
-            <TodoTable todos={todos} deleteTodo={deleteTodo} />
-        </>
-    );
-}
+  const handleDelete = () => {
+    if (gridRef.current.getSelectedNodes().length > 0) {
+      setTodos(todos.filter((todo, index) => 
+        index != gridRef.current.getSelectedNodes()[0].id))
+    }
+    else {
+      alert('Select a row first!');
+    }
+  };
+
+  const columns = [
+    { field: "desc", sortable: true, filter: true },
+    { field: "priority", sortable: true, filter: true, 
+      cellStyle: params => params.value === "High" ? {color: 'red'} : {color: 'black'} },
+    { field: "date", sortable: true, filter: true }
+  ];
+
+  return (
+    <>
+      <input
+        placeholder="Description"
+        onChange={(e) => setTodo({ ...todo, desc: e.target.value })}
+        value={todo.desc}
+      />
+      <input
+        placeholder="Date"
+        onChange={(e) => setTodo({ ...todo, date: e.target.value })}
+        value={todo.date}
+      />
+      <input
+        placeholder="Priority"
+        onChange={(e) => setTodo({ ...todo, priority: e.target.value })}
+        value={todo.priority}
+      />
+      <button onClick={addTodo}>Add</button>
+      <button onClick={handleDelete}>Delete</button>
+      <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
+        <AgGridReact
+        ref={gridRef}
+        onGridReady={ params => gridRef.current = params.api }
+        rowData={todos}
+        columnDefs={columnDefs}
+        rowSelection="single"/>
+      </div>
+    </>
+  );
+};
 
 export default TodoList;
