@@ -62,7 +62,7 @@ function TodoList() {
   return (
   <TabContext value={value}>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      <TabList onChange={handleChange} aria-label="lab API tabs example">
+      <TabList onChange={handleChange}>
         <Tab label="Home" value="1" />
         <Tab label="Todos" value="2" />
       </TabList>
