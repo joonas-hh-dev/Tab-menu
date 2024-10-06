@@ -3,17 +3,17 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import 'ag-grid-community/styles/agGridMaterialFont.css';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import { Box, Button, Stack, Tab, TextField } from '@mui/material';
 import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState({ desc: "", priority: "", date: null });
   const gridRef = useRef();
+  const [value, setValue] = useState('1');
 
   const columnDefs = [
     { headerName: "Description", field: "desc", sortable: true, filter: true, flex: 1, floatingFilter: true },
@@ -55,34 +55,49 @@ function TodoList() {
     }
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} >
-      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-        <TextField
+  <TabContext value={value}>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <TabList onChange={handleChange} aria-label="lab API tabs example">
+        <Tab label="Home" value="1" />
+        <Tab label="Todos" value="2" />
+      </TabList>
+    </Box>
+    <TabPanel value="1">Welcome to my todo app!</TabPanel>
+    <TabPanel value="2">
+      <LocalizationProvider dateAdapter={AdapterDayjs} >
+        <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+          <TextField
           placeholder="Description"
           onChange={(e) => setTodo({ ...todo, desc: e.target.value })}
           value={todo.desc} />
-        <DatePicker
+          <DatePicker
           placeholder="Date"
           value={todo.date}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />} />
-        <TextField
+          <TextField
           placeholder="Priority"
           onChange={(e) => setTodo({ ...todo, priority: e.target.value })}
           value={todo.priority} />
-        <Button onClick={addTodo}>Add</Button>
-        <Button color="error" onClick={handleDelete}>Delete</Button>
-      </Stack>
-      <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
-        <AgGridReact
+          <Button onClick={addTodo}>Add</Button>
+          <Button color="error" onClick={handleDelete}>Delete</Button>
+        </Stack>
+        <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
+          <AgGridReact
           ref={gridRef}
           onGridReady={params => gridRef.current = params.api}
           rowData={todos}
           columnDefs={columnDefs}
           rowSelection="single" />
-      </div>
-    </LocalizationProvider>
+        </div>
+      </LocalizationProvider>
+    </TabPanel>
+  </TabContext>
   );
 }
 
