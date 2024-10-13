@@ -1,6 +1,10 @@
-.css-1eurbeq-MuiPickersToolbar-root-MuiDatePickerToolbar-root {
-  background-color: green;
- }
+.MuiTabPanel-root.css-13xfq8m-MuiTabPanel-root {
+  min-width: 820px;
+}
+
+.MuiTabPanel-root.css-13xfq8m-MuiTabPanel-root {
+  min-height: 604px;
+}
 
 :root {
   --ag-icon-font-family: agGridMaterial;
