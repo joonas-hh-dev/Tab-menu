@@ -67,7 +67,11 @@ function TodoList() {
         <Tab label="Todos" value="2" />
       </TabList>
     </Box>
-    <TabPanel value="1">Welcome to my todo app!</TabPanel>
+    <TabPanel value="1">
+      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+        <h1>Welcome to my todo app!</h1>
+      </Stack>
+    </TabPanel>
     <TabPanel value="2">
       <LocalizationProvider dateAdapter={AdapterDayjs} >
         <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
